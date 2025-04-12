@@ -1,0 +1,119 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 350 100% 98%; /* Very light pink */
+    --foreground: 280 30% 20%; /* Dark purple */
+
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 280 30% 20%; /* Dark purple */
+
+    --popover: 0 0% 100%; /* White */
+    --popover-foreground: 280 30% 20%; /* Dark purple */
+
+    --primary: 355 100% 70%; /* Coral pink #FF6B6B */
+    --primary-foreground: 0 0% 100%; /* White */
+
+    --secondary: 350 100% 91%; /* Light pink #FFD1DC */
+    --secondary-foreground: 280 30% 25%; /* Dark purple/blue */
+
+    --muted: 350 20% 90%; /* Very light pink */
+    --muted-foreground: 280 10% 40%; /* Muted purple */
+
+    --accent: 270 50% 57%; /* Purple #845EC2 */
+    --accent-foreground: 0 0% 100%; /* White */
+
+    --destructive: 0 84.2% 60.2%; /* Red */
+    --destructive-foreground: 0 0% 100%; /* White */
+
+    --border: 350 30% 85%; /* Pink border */
+    --input: 214.3 31.8% 91.4%;
+    --ring: 355 100% 70%; /* Coral pink */
+
+    --radius: 1rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 280 30% 10%;
+    --foreground: 350 20% 90%;
+
+    --card: 280 30% 15%;
+    --card-foreground: 350 20% 90%;
+
+    --popover: 280 30% 15%;
+    --popover-foreground: 350 20% 90%;
+
+    --primary: 355 70% 65%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 280 50% 25%;
+    --secondary-foreground: 350 20% 90%;
+
+    --muted: 280 30% 20%;
+    --muted-foreground: 350 20% 70%;
+
+    --accent: 270 40% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 350 20% 90%;
+
+    --border: 280 30% 25%;
+    --input: 280 30% 25%;
+    --ring: 355 70% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased min-h-screen;
+  }
+}
+
+@layer components {
+  .heart-button {
+    @apply relative inline-flex items-center justify-center rounded-full bg-gradient-to-r from-love-400 to-love-500 text-white 
+           h-12 w-12 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 active:translate-y-0 active:shadow-md;
+  }
+
+  .nav-item {
+    @apply flex-1 flex flex-col items-center justify-center py-3 text-muted-foreground transition-colors;
+  }
+
+  .nav-item.active {
+    @apply text-primary;
+  }
+
+  .timeline-line {
+    @apply absolute left-5 top-0 w-0.5 h-full bg-love-200 z-0;
+  }
+
+  .timeline-dot {
+    @apply absolute top-1/2 -translate-y-1/2 left-5 w-3 h-3 rounded-full bg-love-400 z-10 transform -translate-x-[50%];
+  }
+
+  .love-card {
+    @apply relative flex flex-col rounded-2xl bg-white shadow-md p-4 border border-love-100;
+  }
+
+  .floating-label {
+    @apply absolute -top-2.5 left-4 bg-white px-2 text-xs text-muted-foreground;
+  }
+}
