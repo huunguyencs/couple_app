@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import imageService from "@/services/image.service";
 import { Camera, Upload } from "lucide-react";
 import React, { useRef, useState } from "react";
 import { toast } from "sonner";
@@ -12,13 +13,16 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   onImageSelected,
   currentImage,
 }) => {
+  const [isUploading, setIsUploading] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | undefined>(
     currentImage
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -34,13 +38,16 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const imageData = e.target?.result as string;
-      setPreviewImage(imageData);
-      onImageSelected(imageData);
-    };
-    reader.readAsDataURL(file);
+    setIsUploading(true);
+    try {
+      const data = await imageService.uploadImage(file);
+      setPreviewImage(data);
+      onImageSelected(data);
+    } catch (error) {
+      toast.error("Lỗi khi tải lên ảnh");
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const triggerFileInput = () => {
@@ -61,11 +68,17 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           variant="outline"
           onClick={triggerFileInput}
           className="flex-1"
+          isLoading={isUploading}
         >
           <Upload className="h-4 w-4 mr-2" />
           Upload ảnh
         </Button>
-        <Button type="button" variant="outline" onClick={handleCameraCapture}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={handleCameraCapture}
+          isLoading={isUploading}
+        >
           <Camera className="h-4 w-4" />
         </Button>
       </div>

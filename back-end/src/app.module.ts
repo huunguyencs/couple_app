@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MilestonesModule } from './milestones/milestones.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { TodoModule } from './todo/todo.module';
-
+import { UploadModule } from './upload/upload.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -12,6 +12,7 @@ import { TodoModule } from './todo/todo.module';
     MilestonesModule,
     TodoModule,
     RestaurantModule,
+    UploadModule,
   ],
 })
 export class AppModule {}
