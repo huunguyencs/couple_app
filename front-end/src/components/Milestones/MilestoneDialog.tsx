@@ -44,14 +44,14 @@ const MilestoneDialog = ({
       <DialogContent className="bg-white rounded-xl max-w-md">
         <DialogHeader>
           <DialogTitle className="text-love-500">
-            {isEditing ? "Sửa" : "Thêm"} cột mốc
+            {isEditing ? "Sửa" : "Thêm"} cột mốc thui
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
           <div className="space-y-1">
             <label htmlFor="title" className="text-sm font-medium">
-              Tiêu đề*
+              Tiêu đề điền dô đây ngen beo iuuuu*
             </label>
             <Input
               id="title"
@@ -66,7 +66,7 @@ const MilestoneDialog = ({
 
           <div className="space-y-1">
             <label htmlFor="date" className="text-sm font-medium">
-              Ngày*
+              Ngày nào á beo iu*
             </label>
             <Input
               id="date"
@@ -81,7 +81,7 @@ const MilestoneDialog = ({
 
           <div className="space-y-1">
             <label htmlFor="location" className="text-sm font-medium">
-              Địa điểm
+              Ở đâu zậy beo iu
             </label>
             <Input
               id="location"
@@ -96,7 +96,7 @@ const MilestoneDialog = ({
 
           <div className="space-y-1">
             <label htmlFor="image" className="text-sm font-medium">
-              Cho xin cái ảnh
+              Cho xin ảnh ik beo iu
             </label>
 
             <ImageUpload
@@ -107,7 +107,7 @@ const MilestoneDialog = ({
 
           <div className="space-y-1">
             <label htmlFor="description" className="text-sm font-medium">
-              Mô tả*
+              Có gì đặc biệt lưu ý hông beo iu*
             </label>
             <Textarea
               id="description"
@@ -118,7 +118,7 @@ const MilestoneDialog = ({
                   description: e.target.value,
                 })
               }
-              placeholder="Điền gì đó để nhớ nó"
+              placeholder="Điền dô điền dô ik beooooo"
               className="bg-secondary/30 border-secondary min-h-24"
             />
           </div>
@@ -126,14 +126,14 @@ const MilestoneDialog = ({
 
         <DialogFooter className="flex">
           <Button variant="outline" onClick={resetAndCloseDialog}>
-            Huỷ bỏ
+            Hoy
           </Button>
           <Button
             onClick={handleSubmitMilestone}
             className="bg-love-400 hover:bg-love-500"
             isLoading={submitting}
           >
-            Xong
+            Kê kê rồi
           </Button>
         </DialogFooter>
       </DialogContent>

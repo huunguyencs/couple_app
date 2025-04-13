@@ -96,14 +96,14 @@ const RestaurantDialog = ({
       <DialogContent className="bg-white rounded-xl max-w-md">
         <DialogHeader>
           <DialogTitle className="text-purple-400">
-            {isEditing ? "Sửa" : "Thêm"} quán ăn
+            {isEditing ? "Sửa" : "Thêm"} quán ăn thui
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
           <div className="space-y-1">
             <label htmlFor="name" className="text-sm font-medium">
-              Tên quán*
+              Quán tên gì ó beo iu*
             </label>
             <Input
               id="name"
@@ -118,7 +118,7 @@ const RestaurantDialog = ({
 
           <div className="space-y-1">
             <label htmlFor="cuisine" className="text-sm font-medium">
-              Loại quán ăn
+              Quán gì đó beo iu
             </label>
             <Input
               id="cuisine"
@@ -136,7 +136,7 @@ const RestaurantDialog = ({
 
           <div className="space-y-1">
             <label htmlFor="address" className="text-sm font-medium">
-              Địa chỉ
+              Quán ở đâu zậy beo iu
             </label>
             <Input
               id="address"
@@ -153,7 +153,9 @@ const RestaurantDialog = ({
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium">Food Type Tags</label>
+            <label className="text-sm font-medium">
+              Gắn thẻ cho quán ik beo iu
+            </label>
             <div className="flex items-center gap-2">
               <Popover open={tagSearchOpen} onOpenChange={setTagSearchOpen}>
                 <PopoverTrigger asChild>
@@ -163,14 +165,14 @@ const RestaurantDialog = ({
                     aria-expanded={tagSearchOpen}
                     className="w-full justify-between"
                   >
-                    Select food types
+                    Chọn loại món ăn ik beo
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-full p-0" align="start">
                   <Command>
                     <CommandInput placeholder="Search food types..." />
                     <CommandList>
-                      <CommandEmpty>No food type found.</CommandEmpty>
+                      <CommandEmpty>Không tìm thấy gì hếc.</CommandEmpty>
                       <CommandGroup>
                         {FOOD_TYPES.map((type) => (
                           <CommandItem
@@ -226,7 +228,7 @@ const RestaurantDialog = ({
           </div>
           <div className="space-y">
             <label htmlFor="uploadImage" className="text-sm font-medium">
-              Hình ảnh
+              Cho xin ảnh ik beo iu
             </label>
             <ImageUpload
               onImageSelected={handleImageUpload}
@@ -236,7 +238,7 @@ const RestaurantDialog = ({
 
           <div className="space-y-1">
             <label htmlFor="notes" className="text-sm font-medium">
-              Ghi chú
+              Note note note gì đó ikkkk
             </label>
             <Textarea
               id="notes"
@@ -244,7 +246,7 @@ const RestaurantDialog = ({
               onChange={(e) =>
                 setNewRestaurant({ ...newRestaurant, notes: e.target.value })
               }
-              placeholder="Cảm nhận, ghi chú về quán ăn..."
+              placeholder="Cảm nhận, ghi chú về quán ăn ..."
               className="bg-purple-100/30 border-purple-100 min-h-20"
             />
           </div>
@@ -259,14 +261,14 @@ const RestaurantDialog = ({
           )}
           <div className="grow flex gap-2 sm:justify-end">
             <Button variant="outline" onClick={resetAndCloseDialog}>
-              Huỷ bỏ
+              Hoy
             </Button>
             <Button
               onClick={handleSubmitRestaurant}
               className="bg-purple-400 hover:bg-purple-500"
               isLoading={submitting}
             >
-              Hoàn thành
+              Kê kê rồi
             </Button>
           </div>
         </DialogFooter>

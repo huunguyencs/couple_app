@@ -52,14 +52,14 @@ const TodoDialog = ({
       <DialogContent className="bg-white rounded-xl max-w-md">
         <DialogHeader>
           <DialogTitle className="text-accent">
-            {isEditing ? "Sửa" : "Thêm"} công việc
+            {isEditing ? "Sửa" : "Thêm"} công việc thui
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
           <div className="space-y-1">
             <label htmlFor="title" className="text-sm font-medium">
-              Tiêu đề*
+              Tiêu đề điền dô đây ngen beo iuuuu*
             </label>
             <Input
               id="title"
@@ -74,7 +74,7 @@ const TodoDialog = ({
 
           <div className="space-y-1">
             <label htmlFor="description" className="text-sm font-medium">
-              Mô tả
+              Làm gì làm gì làm gìiiii
             </label>
             <Textarea
               id="description"
@@ -82,14 +82,14 @@ const TodoDialog = ({
               onChange={(e) =>
                 setNewTodo({ ...newTodo, description: e.target.value })
               }
-              placeholder="Nhập cho tui cái mô tả để tui còn biết"
+              placeholder="Nhập cho tui cái mô tả để tui còn biết ik beo iu"
               className="bg-purple-100/30 border-purple-100 min-h-20"
             />
           </div>
 
           <div className="space-y-1">
             <label htmlFor="dueDate" className="text-sm font-medium">
-              Ngày đến hạn
+              Ngày nào hếc hạn đó beo iu
             </label>
             <Input
               id="dueDate"
@@ -133,14 +133,14 @@ const TodoDialog = ({
           )}
           <div className="grow flex gap-2 sm:justify-end">
             <Button variant="outline" onClick={resetAndCloseDialog}>
-              Huỷ bỏ
+              Hoy
             </Button>
             <Button
               onClick={handleSubmitTodo}
               className="bg-accent hover:bg-accent/80"
               isLoading={submitting}
             >
-              Xong
+              Kê kê rồi
             </Button>
           </div>
         </DialogFooter>
