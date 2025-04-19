@@ -1,15 +1,16 @@
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import AllExpenses from "@/pages/AllExpenses";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import Index from "./pages";
+import Expenses from "./pages/Expenses";
 import Milestones from "./pages/Milestones";
 import NotFound from "./pages/NotFound";
 import Restaurants from "./pages/Restaurants";
 import TodoList from "./pages/TodoList";
-
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -25,6 +26,8 @@ const App = () => (
               <Route path="/milestones" element={<Milestones />} />
               <Route path="/restaurants" element={<Restaurants />} />
               <Route path="/todos" element={<TodoList />} />
+              <Route path="/expenses" element={<Expenses />} />
+              <Route path="/expenses/all" element={<AllExpenses />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

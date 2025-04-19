@@ -16,7 +16,7 @@ import { UpdateRestaurantDto } from 'src/restaurant/dto/update-restaurant.dto';
 import { RestaurantDto } from './dto/restaurant.dto';
 import { RestaurantService } from './restaurant.service';
 
-@ApiTags('restaurants')
+@ApiTags('Restaurants')
 @Controller('restaurants')
 export class RestaurantController {
   constructor(private readonly restaurantService: RestaurantService) {}

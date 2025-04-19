@@ -16,7 +16,7 @@ import { CreateTodoDto } from './dto/create-todo.dto';
 import { TodoDto } from './dto/todo.dto';
 import { TodoService } from './todo.service';
 
-@ApiTags('todos')
+@ApiTags('Todos')
 @Controller('todos')
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}

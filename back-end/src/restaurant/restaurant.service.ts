@@ -3,10 +3,11 @@ import { eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DB_PROVIDER } from '../config/database.config';
 import * as schema from '../schema';
-import { restaurants } from '../schema';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { RestaurantDto } from './dto/restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
+
+const restaurants = schema.restaurants;
 @Injectable()
 export class RestaurantService {
   constructor(

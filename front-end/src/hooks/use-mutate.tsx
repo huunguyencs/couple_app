@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 
 interface UseFetchProps<T> {
-  getService: () => Promise<T[]>;
+  getService: (data?: any) => Promise<T[]>;
   postService?: (data: Omit<T, "id">) => Promise<T>;
   putService?: (id: number, data: Partial<T>) => Promise<T>;
   deleteService?: (id: number) => Promise<void>;
@@ -19,10 +20,10 @@ const useMutate = <T,>({
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const fetchData = async () => {
+  const fetchData = async (data?: any) => {
     setFetching(true);
     try {
-      const response = await getService();
+      const response = await getService(data);
       setData(response);
     } catch (error) {
       setError(error as Error);

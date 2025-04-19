@@ -4,9 +4,10 @@ import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { CreateMilestoneDto } from 'src/milestones/dto/create-milestone.dto';
 import { DB_PROVIDER } from '../config/database.config';
 import * as schema from '../schema';
-import { milestones } from '../schema';
 import { MilestoneDto } from './dto/milestone.dto';
 import { UpdateMilestoneDto } from './dto/update-milestone.dto';
+
+const milestones = schema.milestones;
 @Injectable()
 export class MilestonesService {
   constructor(
@@ -15,7 +16,7 @@ export class MilestonesService {
   ) {}
 
   async findAll(): Promise<MilestoneDto[]> {
-    const result = await this.db.select().from(milestones);
+    const result = await this.db.select().from(schema.milestones);
     return result.map((item) => ({
       ...item,
       date: item.date.toISOString(),

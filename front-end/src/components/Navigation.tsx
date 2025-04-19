@@ -1,5 +1,5 @@
+import { CakeSlice, Heart, List, Wallet } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
-import { CakeSlice, Heart, List } from "lucide-react";
 
 const Navigation = () => {
   const location = useLocation();
@@ -45,7 +45,20 @@ const Navigation = () => {
             location.pathname === "/todos" ? "text-love-400" : ""
           }`}
         />
-        <span className="text-xs mt-1">Việc muốn làm</span>
+        <span className="text-xs mt-1">Todo</span>
+      </NavLink>
+      <NavLink
+        to="/expenses"
+        className={`nav-item ${
+          location.pathname === "/expenses" ? "active" : ""
+        }`}
+      >
+        <Wallet
+          className={`h-6 w-6 ${
+            location.pathname === "/expenses" ? "text-love-400" : ""
+          }`}
+        />
+        <span className="text-xs mt-1">Chi tiêu</span>
       </NavLink>
     </nav>
   );

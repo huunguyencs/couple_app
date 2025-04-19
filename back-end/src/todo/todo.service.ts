@@ -3,10 +3,11 @@ import { eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DB_PROVIDER } from '../config/database.config';
 import * as schema from '../schema';
-import { todos } from '../schema';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { TodoDto } from './dto/todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
+
+const todos = schema.todos;
 @Injectable()
 export class TodoService {
   constructor(
