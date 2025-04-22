@@ -1,6 +1,7 @@
 import ExpenseConfig from "@/components/Expense/ExpenseConfig";
 import ExpenseForm from "@/components/Expense/ExpenseForm";
 import ExpenseList from "@/components/Expense/ExpenseList";
+import ExpenseStats from "@/components/Expense/ExpenseStats";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
 import useMutate from "@/hooks/use-mutate";
@@ -59,7 +60,6 @@ const Expenses = () => {
         categoryId: Number(expense.categoryId),
         description: expense.description,
         date: expense.date.toISOString(),
-        monthlyId: monthlyExpenses?.[0]?.id,
       });
       setKey((prev) => prev + 1);
 
@@ -103,9 +103,10 @@ const Expenses = () => {
       </h1>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid grid-cols-2 mb-4">
+        <TabsList className="grid grid-cols-3 mb-4">
           <TabsTrigger value="expenses">Khoản chi</TabsTrigger>
-          <TabsTrigger value="settings">Số tiền</TabsTrigger>
+          <TabsTrigger value="stats">Thống kê</TabsTrigger>
+          <TabsTrigger value="settings">Cài đặt</TabsTrigger>
         </TabsList>
 
         <TabsContent value="expenses">
@@ -123,9 +124,13 @@ const Expenses = () => {
           <ExpenseConfig
             categories={categories}
             updateConfig={updateCategoryConfig}
-            isLoading={fetchingCategories || submittingCategories}
-            getCategoryBalance={getCategoryBalance}
+            isLoading={fetchingCategories || fetchingMonthly}
+            isSubmitting={submittingCategories}
           />
+        </TabsContent>
+
+        <TabsContent value="stats">
+          <ExpenseStats categories={categories} />
         </TabsContent>
       </Tabs>
     </div>

@@ -10,6 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { MonthYearReqDto } from 'src/expense/dto/month-year-req.dto';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { GetExpensesReqDto } from './dto/get-expenses-req.dto';
 import { UpdateExpenseCategoryDto } from './dto/update-expense-category.dto';
@@ -44,13 +45,13 @@ export class ExpenseController {
   }
 
   @Get('monthly')
-  async getExpenseMonthly(@Query('month') month?: string) {
-    return this.expenseService.getExpenseMonthly(month);
+  async getExpenseMonthly(@Query() query: MonthYearReqDto) {
+    return this.expenseService.getExpenseMonthly(query.month, query.year);
   }
 
   @Get('monthly/detail')
-  async getMonthlyExpenseDetail(@Query('month') month: string) {
-    return this.expenseService.getMonthlyExpenseDetail(month);
+  async getMonthlyExpenseDetail(@Query() query: MonthYearReqDto) {
+    return this.expenseService.getMonthlyExpenseDetail(query.month, query.year);
   }
 
   @Get('categories')
@@ -64,5 +65,10 @@ export class ExpenseController {
     @Body() body: UpdateExpenseCategoryDto,
   ) {
     return this.expenseService.updateCategoryExpense(id, body);
+  }
+
+  @Get('statistics')
+  async getExpenseStatistics(@Query() query: MonthYearReqDto) {
+    return this.expenseService.getExpenseStatistics(query.month, query.year);
   }
 }

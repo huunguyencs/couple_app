@@ -4,6 +4,7 @@ import {
   ExpenseCategory,
   ExpenseFilter,
   ExpenseMonthly,
+  ExpenseStatistics,
 } from "@/types/Expense.type";
 
 const expenseService = {
@@ -20,9 +21,11 @@ const expenseService = {
     );
     return response.data;
   },
-  getMonthlyExpenses: async (month?: string) => {
+  getMonthlyExpenses: async (month?: number, year?: number) => {
     const response = await instance.get<ExpenseMonthly[]>(
-      `/expense/monthly?${month ? `month=${month}` : ""}`
+      `/expense/monthly?${month ? `month=${month}` : ""}&${
+        year ? `year=${year}` : ""
+      }`
     );
     return response.data;
   },
@@ -52,7 +55,6 @@ const expenseService = {
     categoryId: number;
     description: string;
     date: string;
-    monthlyId: number;
   }) => {
     const response = await instance.post<Expense>("/expense", expense);
     return response.data;
@@ -63,6 +65,14 @@ const expenseService = {
   },
   deleteExpense: async (id: string) => {
     await instance.delete(`/expense/${id}`);
+  },
+  getExpenseStatistics: async (month?: number, year?: number) => {
+    const response = await instance.get<ExpenseStatistics>(
+      `/expense/statistics?${month ? `month=${month}` : ""}&${
+        year ? `year=${year}` : ""
+      }`
+    );
+    return response.data;
   },
 };
 

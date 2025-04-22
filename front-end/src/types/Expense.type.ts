@@ -15,9 +15,7 @@ export interface ExpenseCategory {
 }
 
 export interface ExpenseMonthly {
-  id: number;
   amount: number;
-  time: string;
   categoryId: number;
 }
 
@@ -25,7 +23,21 @@ export interface Expense {
   id: number;
   date: string;
   amount: number;
-  monthlyId: number;
   category: ExpenseCategory;
   description: string;
+}
+
+export interface StatisticsByDate {
+  date: string;
+  amount: number;
+}
+
+export interface StatisticsByCategory {
+  category: ExpenseCategory;
+  amount: number;
+}
+
+export interface ExpenseStatistics {
+  dataByCategory: StatisticsByCategory[];
+  dataByDate: StatisticsByDate[];
 }

@@ -21,11 +21,5 @@ export class CreateExpenseDto {
     type: Number,
   })
   @IsNumber()
-  monthlyId: number;
-
-  @ApiProperty({
-    type: Number,
-  })
-  @IsNumber()
   categoryId: number;
 }

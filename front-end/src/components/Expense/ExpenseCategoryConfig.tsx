@@ -7,14 +7,14 @@ interface ExpenseCategoryConfigProps {
   categoryId: number;
   defaultMaximum: number;
   onSubmit: (categoryId: number, maximumAmount: number) => void;
-  isLoading: boolean;
+  isSubmitting: boolean;
 }
 
 const ExpenseCategoryConfig = ({
   categoryId,
   defaultMaximum,
   onSubmit,
-  isLoading,
+  isSubmitting,
 }: ExpenseCategoryConfigProps) => {
   const [maximumAmount, setMaximumAmount] = useState(defaultMaximum);
 
@@ -35,8 +35,8 @@ const ExpenseCategoryConfig = ({
       <div className="self-end">
         <Button
           onClick={handleSubmit}
-          disabled={isLoading || !maximumAmount || maximumAmount <= 0}
-          isLoading={isLoading}
+          disabled={isSubmitting || !maximumAmount || maximumAmount <= 0}
+          isLoading={isSubmitting}
         >
           Lưu
         </Button>

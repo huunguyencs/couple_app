@@ -23,3 +23,10 @@ export const EXPENSE_CATEGORIES_MAPPING = {
     icon: "ellipsis-horizontal",
   },
 };
+
+export const EXPENSE_CATEGORIES_COLORS_CHART = {
+  [EXPENSE_CATEGORIES.NECESSITIES]: "blue",
+  [EXPENSE_CATEGORIES.PLAY]: "purple",
+  [EXPENSE_CATEGORIES.EDUCATION]: "green",
+  [EXPENSE_CATEGORIES.OTHER]: "gray",
+};

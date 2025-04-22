@@ -16,7 +16,4 @@ export class ExpenseDto {
     type: ExpenseCategoryDto,
   })
   category: ExpenseCategoryDto;
-
-  @IsNumber()
-  monthlyId: number;
 }

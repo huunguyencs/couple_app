@@ -1,5 +1,5 @@
-import { ConflictException, Inject, Injectable } from '@nestjs/common';
-import { and, asc, desc, eq, sql } from 'drizzle-orm';
+import { Inject, Injectable } from '@nestjs/common';
+import { and, asc, desc, eq, sql, sum } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DB_PROVIDER } from 'src/config/database.config';
 import { CreateExpenseDto } from 'src/expense/dto/create-expense.dto';
@@ -8,7 +8,6 @@ import { UpdateExpenseCategoryDto } from 'src/expense/dto/update-expense-categor
 import * as schema from '../schema';
 
 const expenses = schema.expenses;
-const expensesMonthly = schema.expenseMonthly;
 const expenseCategories = schema.expenseCategories;
 
 const mappingField = {
@@ -74,17 +73,9 @@ export class ExpenseService {
       date: new Date(body.date),
       description: body.description,
       categoryId: body.categoryId,
-      monthlyId: body.monthlyId,
     };
 
     const result = await this.db.insert(expenses).values(values).returning();
-
-    await this.db
-      .update(expensesMonthly)
-      .set({
-        amount: sql`${expensesMonthly.amount} - ${body.amount}`,
-      })
-      .where(eq(expensesMonthly.id, body.monthlyId));
 
     return result[0];
   }
@@ -114,54 +105,42 @@ export class ExpenseService {
     return result[0];
   }
 
-  async getExpenseMonthly(month?: string) {
+  async getExpenseMonthly(month?: number, year?: number) {
     if (!month) {
-      month = this.getCurrentMonthString();
+      month = new Date().getMonth() + 1;
+    }
+    if (!year) {
+      year = new Date().getFullYear();
     }
     const result = await this.db
-      .select()
-      .from(expensesMonthly)
-      .where(eq(expensesMonthly.time, month));
+      .select({
+        amount: sum(expenses.amount),
+        categoryId: expenses.categoryId,
+      })
+      .from(expenses)
+      .where(
+        sql`EXTRACT(MONTH FROM ${expenses.date}) = ${month} AND EXTRACT(YEAR FROM ${expenses.date}) = ${year}`,
+      )
+      .groupBy(expenses.categoryId);
 
     return result;
   }
 
-  async getMonthlyExpenseDetail(month: string) {
+  async getMonthlyExpenseDetail(month?: number, year?: number) {
+    if (!month) {
+      month = new Date().getMonth() + 1;
+    }
+    if (!year) {
+      year = new Date().getFullYear();
+    }
     const result = await this.db
       .select()
-      .from(expensesMonthly)
-      .leftJoin(expenses, eq(expenses.monthlyId, expensesMonthly.id))
-      .where(eq(expenses.date, new Date(month)));
+      .from(expenses)
+      .where(
+        sql`EXTRACT(MONTH FROM ${expenses.date}) = ${month} AND EXTRACT(YEAR FROM ${expenses.date}) = ${year}`,
+      );
 
     return result;
-  }
-
-  async createCurrentMonthlyExpense() {
-    const currentMonthString = this.getCurrentMonthString();
-
-    const existed = await this.db
-      .select()
-      .from(expensesMonthly)
-      .where(eq(expensesMonthly.time, currentMonthString));
-
-    if (existed.length > 0) {
-      throw new ConflictException('Monthly expense already exists');
-    }
-
-    const categories = await this.getCategoryExpense();
-
-    const dataToInsert = categories.map((category) => ({
-      amount: 0,
-      time: currentMonthString,
-      categoryId: category.id,
-    }));
-
-    const result = await this.db
-      .insert(expensesMonthly)
-      .values(dataToInsert)
-      .returning();
-
-    return result[0];
   }
 
   async getCategoryExpense() {
@@ -183,11 +162,100 @@ export class ExpenseService {
     return result[0];
   }
 
-  private getCurrentMonthString() {
-    const currentMonth = new Date().getMonth() + 1;
-    const currentYear = new Date().getFullYear();
-    const currentMonthString = `${currentYear}-${currentMonth}`;
+  async getExpenseStatistics(month?: number, year?: number) {
+    if (!month) {
+      month = new Date().getMonth() + 1;
+    }
+    if (!year) {
+      year = new Date().getFullYear();
+    }
 
-    return currentMonthString;
+    const expensesInMonth = await this.db
+      .select()
+      .from(expenses)
+      .where(
+        sql`EXTRACT(MONTH FROM ${expenses.date}) = ${month} AND EXTRACT(YEAR FROM ${expenses.date}) = ${year}`,
+      );
+
+    const categories = await this.getCategoryExpense();
+
+    const dataByCategoryMap = categories.reduce((acc, category) => {
+      if (!acc[category.id]) {
+        acc[category.id] = 0;
+      }
+      acc[category.id] += expensesInMonth.find(
+        (expense) => expense.categoryId === category.id,
+      )?.amount;
+      return acc;
+    }, {});
+
+    const dataByCategory = Object.entries(dataByCategoryMap).map(
+      ([categoryId, amount]) => ({
+        category: categories.find(
+          (category) => category.id === Number(categoryId),
+        ),
+        amount,
+      }),
+    );
+
+    const dataByDateMap = expensesInMonth.reduce((acc, expense) => {
+      const date = expense.date.toISOString().split('T')[0];
+      if (!acc[date]) {
+        acc[date] = 0;
+      }
+      acc[date] += expense.amount;
+      return acc;
+    }, {});
+
+    const dataByDate = Object.entries(dataByDateMap).map(([date, amount]) => ({
+      date,
+      amount,
+    }));
+
+    const { startDateOfMonth, endDateOfMonth } = this.getStartAndEndDateOfMonth(
+      month,
+      year,
+    );
+
+    const datesInRange = this.getDatesInRange(startDateOfMonth, endDateOfMonth);
+
+    const dataByDateInRange = datesInRange.map((date) => ({
+      date,
+      amount: dataByDate.find((item) => item.date === date)?.amount || 0,
+    }));
+
+    return {
+      dataByCategory,
+      dataByDate: dataByDateInRange,
+    };
+  }
+
+  private getStartAndEndDateOfMonth(month: number, year: number) {
+    const startDateOfMonth = new Date(year, month - 1, 1);
+    let endDateOfMonth = new Date(year, month, 0);
+    if (endDateOfMonth > new Date()) {
+      endDateOfMonth = new Date();
+    }
+    return {
+      startDateOfMonth,
+      endDateOfMonth,
+    };
+  }
+
+  private formatDate(date: Date) {
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  private getDatesInRange(startDate: Date, endDate: Date) {
+    const dates = [];
+    const currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+      dates.push(this.formatDate(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return dates;
   }
 }
