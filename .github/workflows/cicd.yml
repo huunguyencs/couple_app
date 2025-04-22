@@ -8,7 +8,7 @@ on:
 
 
 jobs:
-  connect-ec2-and-deploy
+  connect-ec2-and-deploy:
     name: Connect to EC2 and deploy applications
     runs-on: ubicloud-standard-2
 

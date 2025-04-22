@@ -10,9 +10,8 @@ on:
       - master
   workflow_dispatch:
 
-
 jobs:
-  validate
+  validate:
     name: Validate
     runs-on: ubicloud-standard-2
     steps:
@@ -22,8 +21,8 @@ jobs:
       - name: Set up Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
       - name: Install Backend Dependencies
         run: |
@@ -40,5 +39,3 @@ jobs:
 
       - name: Validate Frontend
         run: npm run lint
-      
-     
