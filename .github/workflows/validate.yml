@@ -1,0 +1,44 @@
+name: Check lint pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+
+jobs:
+  validate
+    name: Validate
+    runs-on: ubicloud-standard-2
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Backend Dependencies
+        run: |
+          cd ./back-end
+          npm ci
+
+      - name: Validate Backend
+        run: npm run lint
+
+      - name: Install Frontend Dependencies
+        run: |
+          cd ../front-end
+          npm ci
+
+      - name: Validate Frontend
+        run: npm run lint
+      
+     

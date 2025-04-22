@@ -1,0 +1,41 @@
+name: Deployment Pipeline
+
+on:
+  push:
+    branches:
+      - 'release/*
+  workflow_dispatch:
+
+
+jobs:
+  connect-ec2-and-deploy
+    name: Connect to EC2 and deploy applications
+    runs-on: ubicloud-standard-2
+
+    steps:
+      - name: Connect and deploy
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+        run: |
+          echo "${EC2_KEY}" > ec2-key.pem
+          chmod 600 ec2-key.pem
+
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST << 'EOF'
+            cd ~/app
+            git checkout master
+            git pull
+            cd ./back-end
+            npm run build
+            npm run push:db:force
+            pm2 restart dist/main.js --name backend
+
+            cd ../front-end
+            npm run build
+            pm2 serve dist/ --name frontend
+          EOF
+
+          rm ec2-key.pem
+
+
