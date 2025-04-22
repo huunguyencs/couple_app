@@ -32,13 +32,11 @@ jobs:
           cache: "npm"
           cache-dependency-path: "back-end/package-lock.json"
 
-      - name: Install Backend Dependencies
+      - name: Install Backend Dependencies & Validate
         run: |
           cd ./back-end
           npm ci --force
-
-      - name: Validate Backend
-        run: npm run lint
+          npm run lint
 
       - name: Set up Node.js Environment
         uses: actions/setup-node@v4
@@ -47,10 +45,8 @@ jobs:
           cache: "npm"
           cache-dependency-path: "front-end/package-lock.json"
 
-      - name: Install Frontend Dependencies
+      - name: Install Frontend Dependencies & Validate
         run: |
-          cd ../front-end
+          cd ./front-end
           npm ci
-
-      - name: Validate Frontend
-        run: npm run lint
+          npm run lint
