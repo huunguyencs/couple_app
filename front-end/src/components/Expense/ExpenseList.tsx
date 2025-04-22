@@ -47,6 +47,7 @@ const ExpenseList = ({ categories, isDefault, key }: ExpenseListProps) => {
 
   useEffect(() => {
     fetchExpenses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
 
   if (fetchingExpenses) {

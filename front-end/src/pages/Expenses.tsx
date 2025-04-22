@@ -93,6 +93,7 @@ const Expenses = () => {
   useEffect(() => {
     fetchCategories();
     fetchMonthlyExpense();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

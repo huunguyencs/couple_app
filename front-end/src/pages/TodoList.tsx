@@ -124,6 +124,7 @@ const TodoList = () => {
   // Sort todos by priority and due date
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
